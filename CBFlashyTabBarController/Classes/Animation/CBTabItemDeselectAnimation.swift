@@ -60,12 +60,12 @@ struct CBTabItemDeselectAnimation: CBTabItemBasicAnimation {
     func labelOffsetAnimation(forTabBarItem item: CBTabBarButton) -> CAAnimation {
         let labelOffsetAnimation = CABasicAnimation(keyPath: "transform.translation.y")
         labelOffsetAnimation.fromValue = 0.0
-        labelOffsetAnimation.toValue = (item.bounds.height - item.tabLabel.frame.height)/2.0 - 5.0
+        labelOffsetAnimation.toValue = (item.bounds.height - item.selectedTabImage.frame.height)/2.0 - 5.0
         return labelOffsetAnimation
     }
 
     func labelMaskAnimation(forTabBarItem item: CBTabBarButton) -> CAAnimation {
-        let maskBounds = item.tabLabel.bounds
+        let maskBounds = item.selectedTabImage.bounds
 
         let path1 = CGMutablePath()
         path1.move(to: .zero)

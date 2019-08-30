@@ -65,6 +65,9 @@ open class CBFlashyTabBar: UITabBar {
 
     open override func layoutSubviews() {
         super.layoutSubviews()
+        
+        
+        
         let btnWidth = bounds.width / CGFloat(buttons.count)
         var btnHeight = bounds.height
         if #available(iOS 11.0, *) {

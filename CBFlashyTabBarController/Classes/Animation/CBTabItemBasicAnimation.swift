@@ -54,14 +54,14 @@ extension CBTabItemBasicAnimation {
             imageMask.path = (animateImageMask.values as? [CGPath])?.last
         }
 
-        if item.tabLabel.layer.mask == nil {
+        if item.selectedTabImage.layer.mask == nil {
             let labelMask = CAShapeLayer()
-            labelMask.frame = item.tabLabel.bounds
-            item.tabLabel.layer.mask = labelMask
+            labelMask.frame = item.selectedTabImage.bounds
+            item.selectedTabImage.layer.mask = labelMask
         }
 
         if let animateLabelMask = animateLabelMask as? CAKeyframeAnimation,
-           let labelMask = item.tabLabel.layer.mask as? CAShapeLayer {
+           let labelMask = item.selectedTabImage.layer.mask as? CAShapeLayer {
             labelMask.path = (animateLabelMask.values as? [CGPath])?.last
         }
 
@@ -70,10 +70,10 @@ extension CBTabItemBasicAnimation {
         CATransaction.setAnimationTimingFunction(timing)
         CATransaction.setCompletionBlock { completion?() }
         item.tabImage.layer.add(animateImageOffset, forKey: "offset")
-        item.tabLabel.layer.add(animateLabelOffset, forKey: "offset")
+        item.selectedTabImage.layer.add(animateLabelOffset, forKey: "offset")
         item.dotView.layer.add(dotAnimation, forKey: "scale")
         item.tabImage.layer.mask?.add(animateImageMask, forKey: "path")
-        item.tabLabel.layer.mask?.add(animateLabelMask, forKey: "path")
+        item.selectedTabImage.layer.mask?.add(animateLabelMask, forKey: "path")
         CATransaction.commit()
     }
 

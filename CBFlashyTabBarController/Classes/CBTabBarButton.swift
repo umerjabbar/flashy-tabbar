@@ -11,7 +11,8 @@ import UIKit
 class CBTabBarButton: UIControl {
 
     var tabImage = UIImageView()
-    var tabLabel = UILabel()
+    var selectedTabImage = UIImageView()
+//    var tabLabel = UILabel()
     var dotView = UIView()
 
     var selectAnimation: CBTabItemAnimation?
@@ -54,14 +55,16 @@ class CBTabBarButton: UIControl {
     var item: UITabBarItem? {
         didSet {
             tabImage.image = item?.image?.withRenderingMode(.alwaysTemplate)
-            tabLabel.attributedText = attributedText(fortitle: item?.title)
+            selectedTabImage.image = item?.image?.withRenderingMode(.alwaysTemplate)
+//            tabLabel.attributedText = attributedText(fortitle: item?.title)
         }
     }
 
     override var tintColor: UIColor! {
         didSet {
             tabImage.tintColor = tintColor.withAlphaComponent(0.4)
-            tabLabel.textColor = tintColor
+            selectedTabImage.tintColor = tintColor
+//            tabLabel.textColor = tintColor
             dotView.backgroundColor = tintColor
         }
     }
@@ -75,16 +78,20 @@ class CBTabBarButton: UIControl {
     }
 
     private func configureSubviews() {
-        addSubview(tabLabel)
+//        addSubview(tabLabel)
+        addSubview(selectedTabImage)
         addSubview(tabImage)
         addSubview(dotView)
-        tabLabel.numberOfLines = 2
-        tabLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        tabLabel.isHidden = true
+//        tabLabel.numberOfLines = 2
+//        tabLabel.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+//        tabLabel.isHidden = true
+        selectedTabImage.contentMode = .center
+        selectedTabImage.isHidden = true
         tabImage.contentMode = .center
-        let dotSize: CGFloat = 5.0
-        dotView.frame = CGRect(origin: .zero, size: CGSize(width: dotSize, height: dotSize))
-        dotView.layer.cornerRadius = dotSize / 2.0
+        let dotSize: CGFloat = 9.0
+        dotView.frame = CGRect(origin: .zero, size: CGSize(width: 60, height: dotSize))
+//        dotView.layer.cornerRadius = dotSize / 2.0
+        dotView.layer.cornerRadius = 3.0
         dotView.layer.shouldRasterize = true
         dotView.layer.rasterizationScale = UIScreen.main.scale
         dotView.isHidden = true
@@ -92,14 +99,20 @@ class CBTabBarButton: UIControl {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        self.clipsToBounds = true
         tabImage.sizeToFit()
         tabImage.center = CGPoint(x: bounds.width/2.0, y: bounds.height/2.0)
-        tabLabel.frame = bounds
-        tabLabel.sizeToFit()
-        tabLabel.center = tabImage.center
-        let dotX: CGFloat = tabImage.center.x - dotView.frame.width/2.0
-        let dotY: CGFloat = tabLabel.frame.maxY + 13.0
+        selectedTabImage.frame = bounds
+        selectedTabImage.sizeToFit()
+        selectedTabImage.center = CGPoint(x: bounds.width/2.0, y: bounds.height/2.0)
+//        tabLabel.frame = bounds
+//        tabLabel.sizeToFit()
+//        tabLabel.center = tabImage.center
+        let dotX: CGFloat = selectedTabImage.center.x - dotView.frame.width/2.0
+//        let dotY: CGFloat = tabLabel.frame.maxY + 13.0
+        let dotY: CGFloat = self.frame.minY - 5
         dotView.frame = CGRect(origin: CGPoint(x: dotX, y: dotY), size: dotView.frame.size)
+        
     }
 
     func setSelected(_ selected: Bool, animated: Bool) {
@@ -116,12 +129,15 @@ class CBTabBarButton: UIControl {
         }
         _isSelected = true
         guard animated, let selectAnimation = selectAnimation else {
-            tabLabel.isHidden = false
+//            tabLabel.isHidden = false
+            selectedTabImage.isHidden = false
             tabImage.isHidden = true
             dotView.isHidden = false
             return
         }
-        tabLabel.isHidden = false
+        
+//        tabLabel.isHidden = false
+        selectedTabImage.isHidden = false
         dotView.isHidden = false
         selectAnimation.playAnimation(forTabBarItem: self) {[weak self] in
             if self?._isSelected ?? false {
@@ -136,15 +152,17 @@ class CBTabBarButton: UIControl {
         }
         _isSelected = false
         guard animated, let deselectAnimation = deselectAnimation else {
-                tabLabel.isHidden = true
-                tabImage.isHidden = false
-                dotView.isHidden = true
-                return
+            //                tabLabel.isHidden = true
+            selectedTabImage.isHidden = true
+            tabImage.isHidden = false
+            dotView.isHidden = true
+            return
         }
         tabImage.isHidden = false
         deselectAnimation.playAnimation(forTabBarItem: self) {[weak self] in
             if !(self?._isSelected ?? true) {
-                self?.tabLabel.isHidden = true
+//                self?.tabLabel.isHidden = true
+                self?.selectedTabImage.isHidden = true
                 self?.dotView.isHidden = true
             }
         }
